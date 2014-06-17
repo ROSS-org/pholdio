@@ -15,14 +15,14 @@ void phold_datatype (MPI_Datatype *dt) {
 
 void phold_serialize (tw_lp *lp, void *store) {
     ((phold_state *)lp->cur_state)->dummy_state = lp->gid + (100 * g_tw_mynode);
-    printf("Storing Dummy %d on %d\n", ((phold_state *)lp->cur_state)->dummy_state, lp->id);
+    printf("Storing Dummy %ld on %lu\n", ((phold_state *)lp->cur_state)->dummy_state, lp->id);
     memcpy(store, lp->cur_state, sizeof(phold_state));
     return;
 }
 
 void phold_deserialize (void * store, tw_lp *lp) {
     memcpy(lp->cur_state, store, sizeof(phold_state));
-    printf("Found Dummy %d on %d\n", ((phold_state *)lp->cur_state)->dummy_state, lp->gid);
+    printf("Found Dummy %ld on %lu\n", ((phold_state *)lp->cur_state)->dummy_state, lp->gid);
     return;
 }
 
