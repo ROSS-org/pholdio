@@ -97,8 +97,8 @@ const tw_optdef app_opt[] = {
     TWOPT_UINT("stagger", stagger, "Set to 1 to stagger event uniformly across 0 to end time."),
     TWOPT_UINT("memory", optimistic_memory, "additional memory buffers"),
     TWOPT_CHAR("run", run_id, "user supplied run name"),
-        TWOPT_UINT("io-files", io_files, "io files"),
-        TWOPT_UINT("io-parts", io_parts, "io partitions"),
+    // TWOPT_UINT("io-files", io_files, "io files"),
+    // TWOPT_UINT("io-parts", io_parts, "io partitions"),
         TWOPT_UINT("io-store", io_store, "io store checkpoint"),
     TWOPT_END()
 };
@@ -111,6 +111,7 @@ int main(int argc, char **argv, char **env) {
     // set a min lookahead of 1.0
     lookahead = 1.0;
     tw_opt_add(app_opt);
+    io_opts();
     tw_init(&argc, &argv);
 
     if( lookahead > 1.0 ) {
@@ -161,7 +162,7 @@ int main(int argc, char **argv, char **env) {
 
     // this is when the simulation starts
     //coughcoughHACK!
-    io_init(io_files, io_parts);
+    io_init(g_io_number_of_files, g_io_number_of_partitions);
 
     io_setup(&phold_datatype, &phold_serialize, &phold_deserialize, sizeof(phold_state));
 
