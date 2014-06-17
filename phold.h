@@ -3,19 +3,19 @@
 
 #include <ross.h>
 #include "io.h"
-	/*
-	 * PHOLD Types
-	 */
 
+/*
+ * PHOLD Types
+ */
 typedef struct phold_state phold_state;
 typedef struct phold_message phold_message;
 
 struct phold_state {
-	long int dummy_state;
+    long int dummy_state;
 };
 
 struct phold_message {
-	long int dummy_data;
+    long int dummy_data;
 };
 
 /*
