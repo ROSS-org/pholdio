@@ -130,8 +130,8 @@ int main(int argc, char **argv, char **env) {
 
     tw_define_lps(nlp_per_pe, sizeof(phold_message), 0);
 
-    for(i = 0; i < g_tw_nlp; i++)
-    tw_lp_settype(i, &mylps[0]);
+    g_tw_lp_types = mylps;
+    tw_lp_setup_types();
 
     if( g_tw_mynode == 0 ){
         printf("========================================\n");
