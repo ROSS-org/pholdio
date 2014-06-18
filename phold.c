@@ -171,8 +171,6 @@ int main(int argc, char **argv, char **env) {
     //coughcoughHACK!
     io_init(g_io_number_of_files, g_io_number_of_partitions);
 
-    io_setup(&phold_datatype, &phold_serialize, &phold_deserialize, sizeof(phold_state));
-
     if (io_store != 0) {
         io_store_checkpoint("phold_checkpoint");
     } else {
