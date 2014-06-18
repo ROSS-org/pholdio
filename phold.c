@@ -86,6 +86,14 @@ tw_lptype mylps[] = {
     {0},
 };
 
+io_lptype iolps[] = {
+    {(datatype_f) phold_datatype,
+     (serialize_f) phold_serialize,
+     (deserialize_f) phold_deserialize,
+     sizeof(phold_state)},
+     {0},
+};
+
 const tw_optdef app_opt[] = {
     TWOPT_GROUP("PHOLD Model"),
     TWOPT_STIME("remote", percent_remote, "desired remote event rate"),
@@ -131,6 +139,7 @@ int main(int argc, char **argv, char **env) {
     tw_define_lps(nlp_per_pe, sizeof(phold_message), 0);
 
     g_tw_lp_types = mylps;
+    g_io_lp_types = iolps;
     tw_lp_setup_types();
 
     if( g_tw_mynode == 0 ){
