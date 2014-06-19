@@ -31,8 +31,6 @@ static unsigned int ttl_lps = 0;
 static unsigned int nlp_per_pe = 8;
 static int g_phold_start_events = 1;
 static int optimistic_memory = 100;
-int io_files = 1;
-int io_parts = 0;
 int io_store = 0;
 
 // rate for timestamp exponential distribution
