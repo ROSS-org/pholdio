@@ -3,6 +3,7 @@
 
 #include <ross.h>
 #include "io.h"
+#include "phold-config.h"
 
 /*
  * PHOLD Types

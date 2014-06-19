@@ -170,6 +170,7 @@ int main(int argc, char **argv, char **env) {
     // this is when the simulation starts
     //coughcoughHACK!
     io_init(g_io_number_of_files, g_io_number_of_partitions);
+    io_register_model_version(MODEL_VERSION);
 
     if (io_store != 0) {
         io_store_checkpoint("phold_checkpoint");
