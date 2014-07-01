@@ -1,18 +1,5 @@
 #include "phold.h"
 
-void phold_datatype (MPI_Datatype *dt) {
-    MPI_Datatype oldtypes[1];
-    int blockcounts[1];
-    MPI_Aint offsets[1];
-
-    offsets[0] = 0;
-    oldtypes[0] = MPI_LONG;
-    blockcounts[0] = 1;
-
-    MPI_Type_struct(1, blockcounts, offsets, oldtypes, dt);
-    MPI_Type_commit(dt);
-}
-
 void phold_serialize (tw_lp *lp, void *store) {
     ((phold_state *)lp->cur_state)->dummy_state = lp->gid + (100 * g_tw_mynode);
     printf("Storing Dummy %ld on %lu\n", ((phold_state *)lp->cur_state)->dummy_state, lp->id);
@@ -87,8 +74,7 @@ tw_lptype mylps[] = {
 };
 
 io_lptype iolps[] = {
-    {(datatype_f) phold_datatype,
-     (serialize_f) phold_serialize,
+    {(serialize_f) phold_serialize,
      (deserialize_f) phold_deserialize,
      sizeof(phold_state)},
      {0},
