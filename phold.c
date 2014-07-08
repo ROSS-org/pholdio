@@ -1,15 +1,15 @@
 #include "phold.h"
 
-void phold_serialize (tw_lp *lp, void *store) {
-    ((phold_state *)lp->cur_state)->dummy_state = lp->gid + (100 * g_tw_mynode);
-    printf("Storing Dummy %ld on %lu\n", ((phold_state *)lp->cur_state)->dummy_state, lp->id);
-    memcpy(store, lp->cur_state, sizeof(phold_state));
+void phold_serialize (phold_state *s, void *buffer, tw_lp *lp) {
+    s->dummy_state = lp->gid + (100 * g_tw_mynode);
+    printf("Storing Dummy %ld on %lu\n", s->dummy_state, lp->gid);
+    memcpy(buffer, s, sizeof(phold_state));
     return;
 }
 
-void phold_deserialize (void * store, tw_lp *lp) {
-    memcpy(lp->cur_state, store, sizeof(phold_state));
-    printf("Found Dummy %ld on %lu\n", ((phold_state *)lp->cur_state)->dummy_state, lp->gid);
+void phold_deserialize (phold_state *s, void * buffer, tw_lp *lp) {
+    memcpy(s, buffer, sizeof(phold_state));
+    printf("Found Dummy %ld on %lu\n", s->dummy_state, lp->gid);
     return;
 }
 
