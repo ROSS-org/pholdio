@@ -13,6 +13,10 @@ void phold_deserialize (phold_state *s, void * buffer, tw_lp *lp) {
     return;
 }
 
+size_t phold_size (phold_state *s, tw_lp *lp) {
+    return sizeof(phold_state);
+}
+
 tw_peid phold_map(tw_lpid gid) {
     return (tw_peid) gid / g_tw_nlp;
 }
@@ -77,7 +81,7 @@ tw_lptype mylps[] = {
 io_lptype iolps[] = {
     {(serialize_f) phold_serialize,
      (deserialize_f) phold_deserialize,
-     sizeof(phold_state)},
+     (model_size_f) phold_size},
      {0},
 };
 
