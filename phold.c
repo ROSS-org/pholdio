@@ -122,8 +122,7 @@ int main(int argc, char **argv, char **env) {
 
     offset_lpid = g_tw_mynode * nlp_per_pe;
     ttl_lps = tw_nnodes() * g_tw_npe * nlp_per_pe;
-    g_tw_events_per_pe = (mult * nlp_per_pe * g_phold_start_events) + 
-    optimistic_memory;
+    g_tw_events_per_pe = (mult * nlp_per_pe * g_phold_start_events) + optimistic_memory;
     //g_tw_rng_default = TW_FALSE;
     g_tw_lookahead = lookahead;
 
