@@ -96,7 +96,7 @@ const tw_optdef app_opt[] = {
     TWOPT_UINT("stagger", stagger, "Set to 1 to stagger event uniformly across 0 to end time."),
     TWOPT_UINT("memory", optimistic_memory, "additional memory buffers"),
     TWOPT_CHAR("run", run_id, "user supplied run name"),
-        TWOPT_UINT("io-store", io_store, "io store checkpoint"),
+    TWOPT_UINT("io-store", io_store, "io store checkpoint"),
     TWOPT_END()
 };
 
@@ -145,29 +145,17 @@ int main(int argc, char **argv, char **env) {
         printf("========================================\n\n");
     }
 
-    // HACKY HACK HACK
-    //tw_run();
-    tw_pe *me;
-    //late_sanity_check(); //static
-    me = setup_pes(); //un-static'd
-
-    //tw_sched_init
-    tw_init_kps(me);
-    tw_init_lps(me);
-
-    tw_net_barrier(me);
-
-    // this is when the simulation starts
-    //coughcoughHACK!
     io_init(g_io_number_of_files, g_io_number_of_partitions);
-    io_register_model_version(MODEL_VERSION);
-
-    if (io_store != 0) {
-        io_store_checkpoint("phold_checkpoint");
-    } else {
+    if (io_store == 0) {
         io_load_checkpoint("phold_checkpoint");
     }
 
+    tw_run();
+    
+    if (io_store != 0) {
+        io_register_model_version(MODEL_VERSION);
+        io_store_checkpoint("phold_checkpoint");
+    }
     io_final();
 
     tw_end();
