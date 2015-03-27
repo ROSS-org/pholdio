@@ -2,7 +2,6 @@
 #define INC_phold_h
 
 #include <ross.h>
-#include "io.h"
 #include "phold-config.h"
 
 /*
