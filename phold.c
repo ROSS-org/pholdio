@@ -147,11 +147,12 @@ int main(int argc, char **argv, char **env) {
 
     io_init(g_io_number_of_files, g_io_number_of_partitions);
     if (io_store == 0) {
-        io_load_checkpoint("phold_checkpoint");
+        strcpy(g_io_checkpoint_name, "phold_checkpoint");
+        g_io_load_at = INIT;
     }
 
     tw_run();
-    
+
     if (io_store != 0) {
         io_register_model_version(MODEL_VERSION);
         io_store_checkpoint("phold_checkpoint");
