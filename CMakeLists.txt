@@ -24,10 +24,10 @@ SET(phold_srcs
     phold.h
     phold-config.h)
 
-ADD_EXECUTABLE(phold ${phold_srcs})
+ADD_EXECUTABLE(pholdio ${phold_srcs})
 
 IF(BGPM)
-    TARGET_LINK_LIBRARIES(phold ROSS ROSSIO imp_bgpm m)
+    TARGET_LINK_LIBRARIES(pholdio ROSS ROSSIO imp_bgpm m)
 ELSE(NOT(BGPM))
-    TARGET_LINK_LIBRARIES(phold ROSS ROSSIO m)
+    TARGET_LINK_LIBRARIES(pholdio ROSS ROSSIO m)
 ENDIF(BGPM)
