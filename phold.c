@@ -145,7 +145,7 @@ int main(int argc, char **argv, char **env) {
         printf("========================================\n\n");
     }
 
-    g_io_events_buffered_per_rank = g_tw_nlp;  // events past end time to store
+    g_io_events_buffered_per_rank = 2*g_tw_nlp;  // events past end time to store
     io_init(g_io_number_of_files, g_io_number_of_partitions);
     if (io_store == 0) {
         strcpy(g_io_checkpoint_name, "phold_checkpoint");
