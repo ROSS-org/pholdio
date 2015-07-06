@@ -108,7 +108,6 @@ int main(int argc, char **argv, char **env) {
     // set a min lookahead of 1.0
     lookahead = 1.0;
     tw_opt_add(app_opt);
-    io_opts();
     tw_init(&argc, &argv);
 
     if( lookahead > 1.0 ) {
