@@ -1,43 +1,43 @@
-#include "phold.h"
+#include "pholdio.h"
 
-void phold_serialize (phold_state *s, void *buffer, tw_lp *lp) {
+void pholdio_serialize (pholdio_state *s, void *buffer, tw_lp *lp) {
     s->dummy_state = lp->gid + (100 * g_tw_mynode);
     printf("Storing Dummy %ld on %lu\n", s->dummy_state, lp->gid);
-    memcpy(buffer, s, sizeof(phold_state));
+    memcpy(buffer, s, sizeof(pholdio_state));
     return;
 }
 
-void phold_deserialize (phold_state *s, void * buffer, tw_lp *lp) {
-    memcpy(s, buffer, sizeof(phold_state));
+void pholdio_deserialize (pholdio_state *s, void * buffer, tw_lp *lp) {
+    memcpy(s, buffer, sizeof(pholdio_state));
     printf("Found Dummy %ld on %lu\n", s->dummy_state, lp->gid);
     return;
 }
 
-size_t phold_size (phold_state *s, tw_lp *lp) {
-    return sizeof(phold_state);
+size_t pholdio_size (pholdio_state *s, tw_lp *lp) {
+    return sizeof(pholdio_state);
 }
 
-tw_peid phold_map(tw_lpid gid) {
+tw_peid pholdio_map(tw_lpid gid) {
     return (tw_peid) gid / g_tw_nlp;
 }
 
-void phold_init(phold_state * s, tw_lp * lp) {
+void pholdio_init(pholdio_state * s, tw_lp * lp) {
     int i;
 
     if ( stagger ) {
-        for (i = 0; i < g_phold_start_events; i++) {
+        for (i = 0; i < g_pholdio_start_events; i++) {
             double rand = tw_rand_exponential(lp->rng, mean);
             tw_event_send(tw_event_new(lp->gid, rand + lookahead + (tw_stime)(lp->gid % (unsigned int)g_tw_ts_end), lp));
         }
     } else {
-        for (i = 0; i < g_phold_start_events; i++) {
+        for (i = 0; i < g_pholdio_start_events; i++) {
             double rand = tw_rand_exponential(lp->rng, mean);
             tw_event_send(tw_event_new(lp->gid, rand + lookahead, lp));
         }
     }
 }
 
-void phold_event_handler(phold_state * s, tw_bf * bf, phold_message * m, tw_lp * lp) {
+void pholdio_event_handler(pholdio_state * s, tw_bf * bf, pholdio_message * m, tw_lp * lp) {
     tw_lpid dest;
 
     if (tw_rand_unif(lp->rng) <= percent_remote) {
@@ -55,7 +55,7 @@ void phold_event_handler(phold_state * s, tw_bf * bf, phold_message * m, tw_lp *
     tw_event_send(tw_event_new(dest, rand + lookahead, lp));
 }
 
-void phold_event_handler_rc(phold_state * s, tw_bf * bf, phold_message * m, tw_lp * lp) {
+void pholdio_event_handler_rc(pholdio_state * s, tw_bf * bf, pholdio_message * m, tw_lp * lp) {
     tw_rand_reverse_unif(lp->rng);
     tw_rand_reverse_unif(lp->rng);
 
@@ -64,35 +64,35 @@ void phold_event_handler_rc(phold_state * s, tw_bf * bf, phold_message * m, tw_l
     }
 }
 
-void phold_finish(phold_state * s, tw_lp * lp) {
+void pholdio_finish(pholdio_state * s, tw_lp * lp) {
 }
 
 tw_lptype mylps[] = {
-    {(init_f) phold_init,
+    {(init_f) pholdio_init,
      (pre_run_f) NULL,
-     (event_f) phold_event_handler,
-     (revent_f) phold_event_handler_rc,
-     (final_f) phold_finish,
-     (map_f) phold_map,
-    sizeof(phold_state)},
+     (event_f) pholdio_event_handler,
+     (revent_f) pholdio_event_handler_rc,
+     (final_f) pholdio_finish,
+     (map_f) pholdio_map,
+    sizeof(pholdio_state)},
     {0},
 };
 
 io_lptype iolps[] = {
-    {(serialize_f) phold_serialize,
-     (deserialize_f) phold_deserialize,
-     (model_size_f) phold_size},
+    {(serialize_f) pholdio_serialize,
+     (deserialize_f) pholdio_deserialize,
+     (model_size_f) pholdio_size},
      {0},
 };
 
 const tw_optdef app_opt[] = {
-    TWOPT_GROUP("PHOLD Model"),
+    TWOPT_GROUP("PHOLDIO Model"),
     TWOPT_STIME("remote", percent_remote, "desired remote event rate"),
     TWOPT_UINT("nlp", nlp_per_pe, "number of LPs per processor"),
     TWOPT_STIME("mean", mean, "exponential distribution mean for timestamps"),
     TWOPT_STIME("mult", mult, "multiplier for event memory allocation"),
     TWOPT_STIME("lookahead", lookahead, "lookahead for events"),
-    TWOPT_UINT("start-events", g_phold_start_events, "number of initial messages per LP"),
+    TWOPT_UINT("start-events", g_pholdio_start_events, "number of initial messages per LP"),
     TWOPT_UINT("stagger", stagger, "Set to 1 to stagger event uniformly across 0 to end time."),
     TWOPT_UINT("memory", optimistic_memory, "additional memory buffers"),
     TWOPT_CHAR("run", run_id, "user supplied run name"),
@@ -121,11 +121,11 @@ int main(int argc, char **argv, char **env) {
 
     offset_lpid = g_tw_mynode * nlp_per_pe;
     ttl_lps = tw_nnodes() * g_tw_npe * nlp_per_pe;
-    g_tw_events_per_pe = (mult * nlp_per_pe * g_phold_start_events) + optimistic_memory;
+    g_tw_events_per_pe = (mult * nlp_per_pe * g_pholdio_start_events) + optimistic_memory;
     //g_tw_rng_default = TW_FALSE;
     g_tw_lookahead = lookahead;
 
-    tw_define_lps(nlp_per_pe, sizeof(phold_message), 0);
+    tw_define_lps(nlp_per_pe, sizeof(pholdio_message), 0);
 
     g_tw_lp_types = mylps;
     g_io_lp_types = iolps;
@@ -133,9 +133,9 @@ int main(int argc, char **argv, char **env) {
 
     if( g_tw_mynode == 0 ){
         printf("========================================\n");
-        printf("PHOLD Model Configuration..............\n");
+        printf("PHOLDIO Model Configuration..............\n");
         printf("   Lookahead..............%lf\n", lookahead);
-        printf("   Start-events...........%u\n", g_phold_start_events);
+        printf("   Start-events...........%u\n", g_pholdio_start_events);
         printf("   stagger................%u\n", stagger);
         printf("   Mean...................%lf\n", mean);
         printf("   Mult...................%lf\n", mult);
@@ -147,7 +147,7 @@ int main(int argc, char **argv, char **env) {
     g_io_events_buffered_per_rank = 2*g_tw_nlp;  // events past end time to store
     io_init(g_io_number_of_files, g_io_number_of_partitions);
     if (io_store == 0) {
-        strcpy(g_io_checkpoint_name, "phold_checkpoint");
+        strcpy(g_io_checkpoint_name, "pholdio_checkpoint");
         g_io_load_at = INIT;
     }
 
@@ -155,7 +155,7 @@ int main(int argc, char **argv, char **env) {
 
     if (io_store != 0) {
         io_register_model_version(MODEL_VERSION);
-        io_store_checkpoint("phold_checkpoint");
+        io_store_checkpoint("pholdio_checkpoint");
     }
     io_final();
 
