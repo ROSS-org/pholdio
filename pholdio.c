@@ -1,5 +1,25 @@
 #include "pholdio.h"
 
+// PHOLDIO Global Variable Definitions & default values
+
+tw_stime lookahead = 1.0;
+static unsigned int stagger = 0;
+static unsigned int offset_lpid = 0;
+static tw_stime mult = 1.4;
+static tw_stime percent_remote = 0.25;
+static unsigned int ttl_lps = 0;
+static unsigned int nlp_per_pe = 8;
+static int g_pholdio_start_events = 1;
+static int optimistic_memory = 100;
+int io_store = 0;
+
+// rate for timestamp exponential distribution
+static tw_stime mean = 1.0;
+static char run_id[1024] = "undefined";
+
+/**
+ * Functions for RIO
+ **/
 void pholdio_serialize (pholdio_state *s, void *buffer, tw_lp *lp) {
     s->dummy_state = lp->gid + (100 * g_tw_mynode);
     printf("Storing Dummy %ld on %lu\n", s->dummy_state, lp->gid);
@@ -21,6 +41,9 @@ tw_peid pholdio_map(tw_lpid gid) {
     return (tw_peid) gid / g_tw_nlp;
 }
 
+/**
+ * Regular PHOLD functions
+ **/
 void pholdio_init(pholdio_state * s, tw_lp * lp) {
     int i;
 
