@@ -3,33 +3,33 @@
 // PHOLDIO Global Variable Definitions & default values
 
 tw_stime lookahead = 1.0;
-static unsigned int stagger = 0;
-static unsigned int offset_lpid = 0;
-static tw_stime mult = 1.4;
-static tw_stime percent_remote = 0.25;
-static unsigned int ttl_lps = 0;
-static unsigned int nlp_per_pe = 8;
-static int g_pholdio_start_events = 1;
-static int optimistic_memory = 100;
+unsigned int stagger = 0;
+unsigned int offset_lpid = 0;
+tw_stime mult = 1.4;
+tw_stime percent_remote = 0.25;
+unsigned int ttl_lps = 0;
+unsigned int nlp_per_pe = 8;
+int g_pholdio_start_events = 1;
+int optimistic_memory = 100;
 int io_store = 0;
 
 // rate for timestamp exponential distribution
-static tw_stime mean = 1.0;
-static char run_id[1024] = "undefined";
+tw_stime mean = 1.0;
+char run_id[1024] = "undefined";
 
 /**
  * Functions for RIO
  **/
 void pholdio_serialize (pholdio_state *s, void *buffer, tw_lp *lp) {
     s->dummy_state = lp->gid + (100 * g_tw_mynode);
-    printf("Storing Dummy %ld on %lu\n", s->dummy_state, lp->gid);
+    printf("Storing Dummy %ld on %llu\n", s->dummy_state, lp->gid);
     memcpy(buffer, s, sizeof(pholdio_state));
     return;
 }
 
 void pholdio_deserialize (pholdio_state *s, void * buffer, tw_lp *lp) {
     memcpy(s, buffer, sizeof(pholdio_state));
-    printf("Found Dummy %ld on %lu\n", s->dummy_state, lp->gid);
+    printf("Found Dummy %ld on %llu\n", s->dummy_state, lp->gid);
     return;
 }
 

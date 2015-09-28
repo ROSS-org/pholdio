@@ -22,18 +22,18 @@ struct pholdio_message {
  * PHOLDIO Global Variable Declarations
  */
 extern tw_stime lookahead;
-extern static unsigned int stagger;
-extern static unsigned int offset_lpid;
-extern static tw_stime mult;
-extern static tw_stime percent_remote;
-extern static unsigned int ttl_lps;
-extern static unsigned int nlp_per_pe;
-extern static int g_pholdio_start_events;
-extern static int optimistic_memory;
+extern unsigned int stagger;
+extern unsigned int offset_lpid;
+extern tw_stime mult;
+extern tw_stime percent_remote;
+extern unsigned int ttl_lps;
+extern unsigned int nlp_per_pe;
+extern int g_pholdio_start_events;
+extern int optimistic_memory;
 extern int io_store;
 
 // rate for timestamp exponential distribution
-extern static tw_stime mean;
-extern static char run_id[1024];
+extern tw_stime mean;
+extern char run_id[1024];
 
 #endif
