@@ -31,3 +31,17 @@ IF(BGPM)
 ELSE(NOT(BGPM))
     TARGET_LINK_LIBRARIES(pholdio ROSS RIO m)
 ENDIF(BGPM)
+
+SET(dpholdio_srcs
+    dpholdio.c
+    dpholdio.h
+    pholdio-config.h)
+
+ADD_EXECUTABLE(dpholdio ${dpholdio_srcs})
+
+IF(BGPM)
+    TARGET_LINK_LIBRARIES(dpholdio ROSS RIO imp_bgpm m)
+ELSE(NOT(BGPM))
+    TARGET_LINK_LIBRARIES(dpholdio ROSS RIO m)
+ENDIF(BGPM)
+
