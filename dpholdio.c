@@ -286,7 +286,7 @@ main(int argc, char **argv, char **env)
 	tw_clock start;
 
 	if (io_store != 2) {
-		g_io_events_buffered_per_rank = 2*g_tw_nlp;  // events past end time to store
+		g_io_events_buffered_per_rank = 2*g_tw_nlp*g_phold_start_events;  // events past end time to store
 		start = tw_clock_read();
     	io_init(g_io_number_of_files, g_io_number_of_partitions);
     	g_tw_pe[0]->stats.s_rio += (tw_clock_read() - start);
