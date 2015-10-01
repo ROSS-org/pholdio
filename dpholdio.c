@@ -214,12 +214,14 @@ tw_lptype       mylps[] = {
 	{0},
 };
 
+#ifdef USE_RIO
 io_lptype iolps[] = {
     {(serialize_f) pholdio_serialize,
      (deserialize_f) pholdio_deserialize,
      (model_size_f) pholdio_size},
      {0},
 };
+#endif
 
 const tw_optdef app_opt[] =
 {
@@ -267,7 +269,9 @@ main(int argc, char **argv, char **env)
 	tw_define_lps(nlp_per_pe, sizeof(phold_message), 0);
 
     g_tw_lp_types = mylps;
+#ifdef USE_RIO
     g_io_lp_types = iolps;
+#endif
     tw_lp_setup_types();
 
 	if( g_tw_mynode == 0 ) {
@@ -286,24 +290,30 @@ main(int argc, char **argv, char **env)
 	tw_clock start;
 
 	if (io_store != 2) {
+#ifdef USE_RIO
 		g_io_events_buffered_per_rank = 2*g_tw_nlp*g_phold_start_events;  // events past end time to store
 		start = tw_clock_read();
     	io_init(g_io_number_of_files, g_io_number_of_partitions);
     	g_tw_pe[0]->stats.s_rio += (tw_clock_read() - start);
+#endif
     }
 
     if (io_store == 0) {
+#ifdef USE_RIO
         strcpy(g_io_checkpoint_name, "pholdio_checkpoint");
         g_io_load_at = INIT;
+#endif
     }
 
     tw_run();
 
     if (io_store == 1) {
+#ifdef USE_RIO
     	start = tw_clock_read();
         io_register_model_version(MODEL_VERSION);
         io_store_checkpoint("pholdio_checkpoint");
         g_tw_pe[0]->stats.s_rio += (tw_clock_read() - start);
+#endif
     }
     //io_final();
 

@@ -40,8 +40,16 @@ SET(dpholdio_srcs
 ADD_EXECUTABLE(dpholdio ${dpholdio_srcs})
 
 IF(BGPM)
-    TARGET_LINK_LIBRARIES(dpholdio ROSS RIO imp_bgpm m)
+    IF(USE_RIO)
+        TARGET_LINK_LIBRARIES(dpholdio ROSS RIO imp_bgpm m)
+    ELSE(NOT(USE_RIO))
+        TARGET_LINK_LIBRARIES(dpholdio ROSS imp_bgpm m)
+    ENDIF(USE_RIO)
 ELSE(NOT(BGPM))
-    TARGET_LINK_LIBRARIES(dpholdio ROSS RIO m)
+    IF(USE_RIO)
+        TARGET_LINK_LIBRARIES(dpholdio ROSS RIO m)
+    ELSE(NOT(USE_RIO))
+        TARGET_LINK_LIBRARIES(dpholdio ROSS m)
+    ENDIF(USE_RIO)
 ENDIF(BGPM)
 
