@@ -311,6 +311,7 @@ main(int argc, char **argv, char **env)
 #ifdef USE_RIO
     	start = tw_clock_read();
         io_register_model_version(MODEL_VERSION);
+        int data_file = g_tw_mynode / g_io_number_of_files;
         io_store_checkpoint("pholdio_checkpoint");
         g_tw_pe[0]->stats.s_rio_load += (tw_clock_read() - start);
 #endif
