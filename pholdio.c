@@ -173,7 +173,7 @@ int main(int argc, char **argv, char **env) {
         g_io_events_buffered_per_rank = 2*g_tw_nlp*g_pholdio_start_events;  // events past end time to store
         start = tw_clock_read();
         io_init(g_io_number_of_files, g_io_number_of_partitions);
-        g_tw_pe[0]->stats.s_rio += (tw_clock_read() - start);
+        g_tw_pe[0]->stats.s_rio_load += (tw_clock_read() - start);
     }
     if (io_store == 0) {
         strcpy(g_io_checkpoint_name, "pholdio_checkpoint");
@@ -186,7 +186,7 @@ int main(int argc, char **argv, char **env) {
         start = tw_clock_read();
         io_register_model_version(MODEL_VERSION);
         io_store_checkpoint("pholdio_checkpoint");
-        g_tw_pe[0]->stats.s_rio += (tw_clock_read() - start);
+        g_tw_pe[0]->stats.s_rio_load += (tw_clock_read() - start);
     }
     // io_final();
 
