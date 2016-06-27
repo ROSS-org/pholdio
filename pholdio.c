@@ -172,7 +172,7 @@ int main(int argc, char **argv, char **env) {
     if (io_store != 2) {
         g_io_events_buffered_per_rank = 2*g_tw_nlp*g_pholdio_start_events;  // events past end time to store
         start = tw_clock_read();
-        io_init(g_io_number_of_files, g_io_number_of_partitions);
+        io_init_global(g_io_number_of_files, g_io_number_of_partitions);
         g_tw_pe[0]->stats.s_rio_load += (tw_clock_read() - start);
     }
     if (io_store == 0) {
