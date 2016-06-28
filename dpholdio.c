@@ -289,15 +289,17 @@ main(int argc, char **argv, char **env)
 
 	tw_clock start;
 
+    // IF WE ARE USING RIO
 	if (io_store != 2) {
 #ifdef USE_RIO
+    start = tw_clock_read();
 		g_io_events_buffered_per_rank = 2*g_tw_nlp*g_phold_start_events;  // events past end time to store
-		start = tw_clock_read();
-    	io_init(g_io_number_of_files);
-    	g_tw_pe[0]->stats.s_rio_load += (tw_clock_read() - start);
+    io_init();
+    g_tw_pe[0]->stats.s_rio_load += (tw_clock_read() - start);
 #endif
     }
 
+    // IF WE ARE LOADING A CHECKPOINT
     if (io_store == 0) {
 #ifdef USE_RIO
         strcpy(g_io_checkpoint_name, "pholdio_checkpoint");
@@ -307,16 +309,16 @@ main(int argc, char **argv, char **env)
 
     tw_run();
 
+    // IF WE ARE STORING A CHECKPOINT
     if (io_store == 1) {
 #ifdef USE_RIO
     	start = tw_clock_read();
-        io_register_model_version(MODEL_VERSION);
-        int data_file = g_tw_mynode / g_io_number_of_files;
-        io_store_checkpoint("pholdio_checkpoint", data_file);
-        g_tw_pe[0]->stats.s_rio_load += (tw_clock_read() - start);
+      io_register_model_version(MODEL_VERSION);
+      int data_file = g_tw_mynode / g_io_number_of_files;
+      io_store_checkpoint("pholdio_checkpoint", data_file);
+      g_tw_pe[0]->stats.s_rio_load += (tw_clock_read() - start);
 #endif
     }
-    //io_final();
 
 	tw_end();
 
