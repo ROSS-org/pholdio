@@ -19,6 +19,8 @@ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/pholdio-config.h.in ${CMAKE_CURRENT_B
 SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_SOURCE_DIR}/pholdio-config.h.in PROPERTIES GENERATED FALSE)
 SET_SOURCE_FILES_PROPERTIES(${CMAKE_CURRENT_BINARY_DIR}/pholdio-config.h PROPERTIES GENERATED TRUE)
 
+## PHOLD-IO Model
+## this model *requires* RIO to build
 SET(pholdio_srcs
     pholdio.c
     pholdio.h
@@ -32,6 +34,8 @@ ELSE(NOT(BGPM))
     TARGET_LINK_LIBRARIES(pholdio ROSS RIO m)
 ENDIF(BGPM)
 
+## Delta-PHOLD-IO Model
+## this model can be built with or without RIO
 SET(dpholdio_srcs
     dpholdio.c
     dpholdio.h
