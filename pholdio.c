@@ -179,8 +179,7 @@ int main(int argc, char **argv, char **env) {
 
     // IF WE ARE LOADING A CHECKPOINT
     if (io_store == 0) {
-        strcpy(g_io_checkpoint_name, "pholdio_checkpoint");
-        g_io_load_at = INIT;
+        io_load_checkpoint("pholdio_checkpoint", INIT);
     }
 
     tw_run();
@@ -189,7 +188,8 @@ int main(int argc, char **argv, char **env) {
     if (io_store == 1) {
         start = tw_clock_read();
         io_register_model_version(MODEL_VERSION);
-        int data_file = g_tw_mynode / g_io_number_of_files;
+        int ranks_per_file = tw_nnodes() / g_io_number_of_files;
+        int data_file = g_tw_mynode / ranks_per_file;
         io_store_checkpoint("pholdio_checkpoint", data_file);
         g_tw_pe[0]->stats.s_rio_load += (tw_clock_read() - start);
     }
