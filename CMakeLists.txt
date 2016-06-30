@@ -34,6 +34,15 @@ ELSE(NOT(BGPM))
     TARGET_LINK_LIBRARIES(pholdio ROSS RIO m)
 ENDIF(BGPM)
 
+## Testing
+MACRO(DO_TEST test_name)
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/${test_name}.sh ${CMAKE_CURRENT_BINARY_DIR}/${test_name}.sh COPYONLY)
+    ADD_TEST(RIO_${test_name} ./${test_name}.sh)
+ENDMACRO(DO_TEST)
+
+DO_TEST("NetEventTest")
+DO_TEST("ParallelismTest")
+
 ## Delta-PHOLD-IO Model
 ## this model can be built with or without RIO
 SET(dpholdio_srcs
