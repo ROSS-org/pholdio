@@ -42,6 +42,7 @@ ENDMACRO(DO_TEST)
 
 DO_TEST("NetEventTest")
 DO_TEST("ParallelismTest")
+DO_TEST("OptimisticTest")
 
 ## Delta-PHOLD-IO Model
 ## this model can be built with or without RIO
