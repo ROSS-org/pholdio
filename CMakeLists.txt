@@ -36,7 +36,7 @@ ENDIF(BGPM)
 
 ## Testing
 MACRO(DO_TEST test_name)
-    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/${test_name}.sh ${CMAKE_CURRENT_BINARY_DIR}/${test_name}.sh COPYONLY)
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/tests/${test_name}.sh ${CMAKE_CURRENT_BINARY_DIR}/${test_name}.sh COPYONLY)
     ADD_TEST(RIO_${test_name} ./${test_name}.sh)
 ENDMACRO(DO_TEST)
 
