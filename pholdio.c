@@ -5,7 +5,7 @@
 tw_stime lookahead = 1.0;
 unsigned int stagger = 0;
 unsigned int offset_lpid = 0;
-tw_stime mult = 1.4;
+tw_stime mult = 4;
 tw_stime percent_remote = 0.25;
 unsigned int ttl_lps = 0;
 unsigned int nlp_per_pe = 8;
@@ -172,7 +172,7 @@ int main(int argc, char **argv, char **env) {
     // IF WE ARE USING RIO
     if (io_store != 2) {
         start = tw_clock_read();
-        g_io_events_buffered_per_rank = 2*g_tw_nlp*g_pholdio_start_events;  // events past end time to store
+        g_io_events_buffered_per_rank = 4*g_tw_nlp*g_pholdio_start_events;  // events past end time to store
         io_init();
         g_tw_pe[0]->stats.s_rio_load += (tw_clock_read() - start);
     }
