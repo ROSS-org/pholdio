@@ -95,6 +95,7 @@ tw_lptype mylps[] = {
      (pre_run_f) NULL,
      (event_f) pholdio_event_handler,
      (revent_f) pholdio_event_handler_rc,
+     (commit_f) NULL,
      (final_f) pholdio_finish,
      (map_f) pholdio_map,
     sizeof(pholdio_state)},
@@ -148,7 +149,7 @@ int main(int argc, char **argv, char **env) {
     //g_tw_rng_default = TW_FALSE;
     g_tw_lookahead = lookahead;
 
-    tw_define_lps(nlp_per_pe, sizeof(pholdio_message), 0);
+    tw_define_lps(nlp_per_pe, sizeof(pholdio_message));
 
     g_tw_lp_types = mylps;
     g_io_lp_types = iolps;

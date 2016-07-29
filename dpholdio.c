@@ -191,7 +191,7 @@ phold_event_handler_rc(phold_state * s, tw_bf * bf, phold_message * m, tw_lp * l
     // this gets called, we must be in an OPTIMISTIC mode anyway
     long count = m->rng_count;
     // This should be the FIRST thing to do in your reverse event handler
-    tw_snapshot_restore(lp, lp->type->state_sz, lp->pe->cur_event->delta_buddy, lp->pe->cur_event->delta_size);
+    tw_snapshot_restore(lp, lp->type->state_sz);
     while (count--) {
         tw_rand_reverse_unif(lp->rng);
     }
@@ -208,6 +208,7 @@ tw_lptype       mylps[] = {
      (pre_run_f) NULL,
 	 (event_f) phold_event_handler,
 	 (revent_f) phold_event_handler_rc,
+   (commit_f) NULL,
 	 (final_f) phold_finish,
 	 (map_f) phold_map,
 	sizeof(phold_state)},
@@ -266,7 +267,7 @@ main(int argc, char **argv, char **env)
 	//g_tw_rng_default = TW_FALSE;
 	g_tw_lookahead = lookahead;
 
-	tw_define_lps(nlp_per_pe, sizeof(phold_message), 0);
+	tw_define_lps(nlp_per_pe, sizeof(phold_message));
 
     g_tw_lp_types = mylps;
 #ifdef USE_RIO
